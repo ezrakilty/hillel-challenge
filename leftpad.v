@@ -56,7 +56,7 @@ Proof.
  unfold leftpad.
  firstorder (autorewrite with list_lemmas; auto).
     destruct (le_lt_dec n (length s)).
-     rewrite max_r; try omega.
+     rewrite max_r; omega.
     rewrite max_l; omega.
    apply listall_repeat.
   firstorder (autorewrite with list_lemmas; auto).

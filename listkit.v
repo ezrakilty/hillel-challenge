@@ -2,14 +2,17 @@ Require Import Arith.
 Require Import List.
 Require Import Omega.
 
+(** All elements of a list have a property. *)
 Fixpoint listall A P (xs:list A) :=
   match xs with
       nil => True
     | (x::xs) => P x /\ listall _ P xs
   end.
 
+(** All elements of a list have the same (given) value. *)
 Definition allEq A xs y := listall A (fun x => x = y) xs.
 
+(** Return the first n elements of a list. *)
 Fixpoint take A n (xs : list A) :=
   match xs with
       nil => nil
@@ -20,6 +23,7 @@ Fixpoint take A n (xs : list A) :=
       end
   end.
 
+(** After conjuring up n copies of an element, taking n of them is a no-op. *)
 Lemma take_repeat:
   forall A n c,
     take A n (repeat c n) = repeat c n.
@@ -33,6 +37,8 @@ Proof.
  auto.
 Qed.
 
+(** Taking n elements of a concatentation, when n is less than the
+    length of the first concatenand, gives just n elements of that concatenand. *)
 Lemma take_app:
   forall A n (xs ys : list A),
   n <= length xs ->
@@ -57,6 +63,7 @@ Proof.
  omega.
 Qed.
 
+(** If we conjure copies of a value, all the elements of the list are equal to that value. *)
 Lemma listall_repeat :
   forall A c n,
     listall A (fun x => x = c) (repeat c n).
@@ -66,6 +73,7 @@ Proof.
  split; auto.
 Qed.
 
+(** Return what follows after the first n elements of a list. *)
 Fixpoint drop A n (xs : list A) :=
   match n with
       0 => xs
@@ -77,6 +85,8 @@ Fixpoint drop A n (xs : list A) :=
       end
   end.
 
+(** Dropping the first n elements of a concatenation, when n is the
+    length of the first concatenand, gives just the second concatenand. *)
 Lemma drop_app:
   forall A n (xs ys : list A),
     n = length xs ->
